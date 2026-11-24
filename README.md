@@ -79,3 +79,21 @@ Xabarda o‘quvchining ismi, sinfi va natijasi yuboriladi. Test yakunlanishi va 
 Docker Compose konfiguratsiyasi lokal ishlash uchun tayyorlangan. `.env.example` asosida `.env` yaratib, maxfiy qiymatlarni belgilang. PostgreSQL administratori va API uchun alohida parollardan foydalaning. Keyin `docker compose up --build -d` orqali xizmatlarni ochish mumkin. Serverga joylashda sayt domenini `APP_ORIGIN` ga yozing, HTTPS reverse proxy sozlang va `SECURE_COOKIES=true` ni qo‘ying. API hamda baza ichki tarmoqda ishlaydi, web porti standart holatda faqat loopback manziliga bog‘lanadi.
 
 Frontendni tekshirish uchun `npm run typecheck` va `npm run build` buyruqlarini `frontend` papkasida bajaring. Backend va PostgreSQL tayyorligini `GET /api/health` orqali tekshirish mumkin.
+
+## Hostless orqali joylash
+
+1. Supabase’da **Free** loyiha yarating. PostgreSQL ilova orqali ishlatiladi, shuning uchun **Data API** tanlovini o‘chiring. **Connect → Session pooler → URI** orqali ulanish manzilini oling. Manzildagi parol o‘rniga loyiha parolini yozing. **Database Settings** bo‘limidan PostgreSQL sertifikatini yuklab oling. [Supabase ulanish qo‘llanmasi](https://supabase.com/docs/guides/database/psql)
+2. Hostless’da **Create resource → App** ni tanlang, GitHub’dagi VocabPro repozitoriysini ulang va build turiga **Docker** ni belgilang. Ish papkasi `/`, Dockerfile yo‘li `./Dockerfile`. [Hostless joylash qo‘llanmasi](https://docs.hostless.cloud/started)
+3. **Environment variables** bo‘limiga quyidagi qiymatlarni kiriting. `APP_ORIGIN` oxirida `/` belgisi bo‘lmaydi.
+
+   | O‘zgaruvchi | Qiymat |
+   | --- | --- |
+   | `APP_ORIGIN` | Hostless bergan saytning HTTPS manzili |
+   | `DATABASE_URL` | Supabase Session pooler URI, oxiriga `?sslmode=verify-full` qo‘shilgan holda. URI’da `sslmode` bo‘lsa, qiymatini `verify-full` ga almashtiring. |
+   | `DATABASE_CA_CERTIFICATE` | Supabase’dan yuklangan sertifikatning to‘liq PEM matni |
+   | `SESSION_SECRET` | Kamida 32 belgili tasodifiy maxfiy qiymat |
+   | `TEACHER_CODE` | O‘qituvchi uchun kamida 8 belgili maxfiy kod |
+   | `SECURE_COOKIES` | `true` |
+
+   Sessiya kalitini PowerShell’da `node -p "require('node:crypto').randomBytes(32).toString('hex')"` orqali yaratish mumkin. Qiymatlarni Hostless sozlamasida saqlang.
+4. Deploy tugagach, saytning `/api/health` manzilida `{"status":"ok"}` chiqishini tekshiring. Ustoz panelida sinov testini faollashtiring, o‘quvchi panelidan topshiring va natijani ustoz panelida tekshiring.

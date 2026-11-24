@@ -68,5 +68,10 @@ async def health():
     return {"status": "ok"}
 
 
+@app.get("/api/live", include_in_schema=False)
+async def live():
+    return {"status": "ok"}
+
+
 for router in (auth.router, catalog.student_router, catalog.teacher_router, attempts.router, results.router, imports.router, telegram.router):
     app.include_router(router, prefix="/api")

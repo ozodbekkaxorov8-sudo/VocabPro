@@ -1,0 +1,6 @@
+build:
+  system: docker
+dockerfile_path: ./Dockerfile
+health_check:
+  type: http
+  http_path: /api/live
