@@ -1,0 +1,20 @@
+[project]
+name = "vocabpro-api"
+version = "1.0.0"
+requires-python = ">=3.13,<3.15"
+dependencies = [
+    "fastapi>=0.120,<1",
+    "uvicorn[standard]>=0.38,<1",
+    "psycopg[binary,pool]>=3.2,<4",
+    "pydantic-settings>=2.11,<3",
+    "itsdangerous>=2.2,<3",
+    "httpx>=0.28,<1",
+    "python-multipart>=0.0.22,<1",
+    "pypdfium2>=5,<6",
+    "pillow>=12,<13",
+    "rapidocr>=3.10,<4",
+    "onnxruntime>=1.23,<2",
+]
+
+[tool.uv]
+package = false

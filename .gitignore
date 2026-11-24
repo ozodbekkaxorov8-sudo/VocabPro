@@ -1,0 +1,11 @@
+**/__pycache__/
+*.py[cod]
+.venv/
+.runtime/
+.env
+.env.local
+.next/
+next-env.d.ts
+node_modules/
+*.tsbuildinfo
+*.log
